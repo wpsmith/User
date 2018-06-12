@@ -72,7 +72,10 @@ if ( ! class_exists( 'User' ) ) {
 		 */
 		private function set_user() {
 			global $current_user;
+
 			$user_id = apply_filters( 'determine_current_user', false );
+			remove_action( 'set_current_user', 'bbp_setup_current_user', 10 );
+
 			if ( ! $user_id ) {
 				wp_set_current_user( 0 );
 
@@ -80,6 +83,8 @@ if ( ! class_exists( 'User' ) ) {
 			}
 
 			wp_set_current_user( $user_id );
+
+			add_action( 'set_current_user', 'bbp_setup_current_user', 10 );
 
 			return $current_user;
 		}
@@ -91,10 +96,51 @@ if ( ! class_exists( 'User' ) ) {
 		 *
 		 * @return bool Whether the user is a super user.
 		 */
-		public function is_super_user( $user ) {
-			$user = $this->get_user( $user );
+		public function is_current_super_user() {
+			$current_user = $this->get_current_user();
 
-			return in_array( $user, $this->super_users, true );
+			return $this->is_super_user( $current_user );
+		}
+
+		/**
+		 * Determines whether the user is a super user.
+		 *
+		 * @param mixed $user User to be checked.
+		 *
+		 * @return bool Whether the user is a super user.
+		 */
+		public function is_super_user( $user ) {
+			if ( ! is_a( $user, 'WP_User' ) ) {
+				$user = $this->get_user( $user );
+			}
+
+			return (
+				in_array( $user->user_email, $this->super_users, true ) ||
+				in_array( $user->user_login, $this->super_users, true ) ||
+				in_array( $user->ID, $this->super_users, true )
+			);
+		}
+
+		/**
+		 * Determines whether the user is a current user.
+		 *
+		 * @param mixed $user User to be checked.
+		 *
+		 * @return \WP_User Whether the user is the current user.
+		 */
+		public function get_current_user() {
+			if ( function_exists( 'wp_get_current_user' ) ) {
+				$current = wp_get_current_user();
+
+				if ( ! empty( $current ) ) {
+					return $current;
+				}
+			}
+
+			$this->set_user();
+			global $current_user;
+
+			return $current_user;
 		}
 
 		/**
