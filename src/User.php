@@ -84,7 +84,9 @@ if ( ! class_exists( 'User' ) ) {
 
 			wp_set_current_user( $user_id );
 
-			add_action( 'set_current_user', 'bbp_setup_current_user', 10 );
+			if ( function_exists( 'bbp_setup_current_user' ) ) {
+				add_action( 'set_current_user', 'bbp_setup_current_user', 10 );
+			}
 
 			return $current_user;
 		}
