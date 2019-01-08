@@ -8,7 +8,7 @@
  * Any modifications to or software including (via compiler) GPL-licensed code must also be made
  * available under the GPL along with build & install instructions.
  *
- * @package    WPS\Core
+ * @package    WPS\Users
  * @author     Travis Smith <t@wpsmith.net>
  * @copyright  2015-2018 Travis Smith
  * @license    http://opensource.org/licenses/gpl-2.0.php GNU Public License v2
@@ -28,7 +28,7 @@ if ( ! class_exists( 'HideUser' ) ) {
 	/**
 	 * Class HideUser
 	 *
-	 * @package WPS\Core
+	 * @package WPS\Users
 	 */
 	class HideUser extends User {
 
