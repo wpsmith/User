@@ -17,7 +17,7 @@
  * @since      0.1.0
  */
 
-namespace WPS\Core;
+namespace WPS\Users;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -57,13 +57,15 @@ if ( ! class_exists( 'HideUser' ) ) {
 				return;
 			}
 
-			if ( 'wpsmith' !== $current_user->user_login ) {
-				global $wpdb;
-				$user_search->query_where = str_replace(
-					'WHERE 1=1',
-					"WHERE 1=1 AND {$wpdb->users}.user_login != 'wpsmith'",
-					$user_search->query_where
-				);
+			foreach( $this->super_users as $user ) {
+				if ( $user !== $current_user->user_login ) {
+					global $wpdb;
+					$user_search->query_where = str_replace(
+						'WHERE 1=1',
+						"WHERE 1=1 AND {$wpdb->users}.user_login != '$user'",
+						$user_search->query_where
+					);
+				}
 			}
 
 		}

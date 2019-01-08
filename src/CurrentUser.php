@@ -18,7 +18,7 @@
  * @since      0.1.0
  */
 
-namespace WPS\Core;
+namespace WPS\Users;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

@@ -18,7 +18,9 @@
  * @since      0.1.0
  */
 
-namespace WPS\Core;
+namespace WPS\Users;
+
+use WPS;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,7 +33,7 @@ if ( ! class_exists( 'User' ) ) {
 	 *
 	 * @package WPS\Core
 	 */
-	abstract class User extends Singleton {
+	abstract class User extends WPS\Core\Singleton {
 
 		/**
 		 * User.
