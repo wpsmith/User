@@ -45,7 +45,7 @@ if ( ! class_exists( 'CurrentUser' ) ) {
 		 *
 		 * @return \WP_User
 		 */
-		private function set_user() {
+		public function set_user() {
 			global $current_user;
 
 			$user_id = apply_filters( 'determine_current_user', false );
@@ -69,7 +69,7 @@ if ( ! class_exists( 'CurrentUser' ) ) {
 		/**
 		 * Determines whether the user is a super user.
 		 *
-		 * @param mixed $user User to be checked.
+		 * @param string|int|\WP_User $user User to be checked.
 		 *
 		 * @return bool Whether the user is a super user.
 		 */
@@ -80,9 +80,22 @@ if ( ! class_exists( 'CurrentUser' ) ) {
 		}
 
 		/**
+		 * Determines whether the user is a super user.
+		 *
+		 * @alias is_current_super_user
+		 *
+		 * @param string|int|\WP_User $user User to be checked.
+		 *
+		 * @return bool Whether the user is a super user.
+		 */
+		public function is_current_user_a_super_user() {
+			return $this->is_current_super_user();
+		}
+
+		/**
 		 * Determines whether the user is a current user.
 		 *
-		 * @param mixed $user User to be checked.
+		 * @param string|int|\WP_User $user User to be checked.
 		 *
 		 * @return \WP_User Whether the user is the current user.
 		 */
@@ -104,7 +117,7 @@ if ( ! class_exists( 'CurrentUser' ) ) {
 		/**
 		 * Determines whether the user is a current user.
 		 *
-		 * @param mixed $user User to be checked.
+		 * @param string|int|\WP_User $user User to be checked.
 		 *
 		 * @return bool Whether the user is the current user.
 		 */
