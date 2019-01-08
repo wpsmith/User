@@ -73,9 +73,7 @@ if ( ! class_exists( 'User' ) ) {
 		 * @return bool Whether the user is a super user.
 		 */
 		public function is_super_user( $user ) {
-			if ( ! is_a( $user, 'WP_User' ) ) {
-				$user = $this->get_user( $user );
-			}
+			$user = $this->get_user( $user );
 
 			return (
 				in_array( $user->user_email, $this->super_users, true ) ||
@@ -92,7 +90,9 @@ if ( ! class_exists( 'User' ) ) {
 		 * @return false|\WP_User The WP_User object or false if User cannot be found.
 		 */
 		public function get_user( $user ) {
-			if ( is_numeric( $user ) ) {
+			if ( is_a( $user, 'WP_User' ) ) {
+				return $user;
+			} elseif ( is_numeric( $user ) ) {
 				$user = get_user_by( 'ID', $user );
 			} elseif ( is_string( $user ) ) {
 				if ( is_email( $user ) ) {
