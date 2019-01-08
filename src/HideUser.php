@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'HideUser' ) ) {
+if ( ! class_exists( 'WPS\Users\HideUser' ) ) {
 	/**
 	 * Class HideUser
 	 *

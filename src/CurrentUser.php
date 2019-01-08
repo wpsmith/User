@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'CurrentUser' ) ) {
+if ( ! class_exists( 'WPS\Users\CurrentUser' ) ) {
 	/**
 	 * Class User
 	 *
