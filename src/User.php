@@ -31,10 +31,10 @@ if ( ! class_exists( 'User' ) ) {
 	 *
 	 * @package WPS\Core
 	 */
-	class User extends Singleton {
+	abstract class User extends Singleton {
 
 		/**
-		 * Current User
+		 * User.
 		 *
 		 * @var \WP_User
 		 */
@@ -52,62 +52,21 @@ if ( ! class_exists( 'User' ) ) {
 		 *
 		 * @param array $super_users Array of super users.
 		 */
-		public function __construct( $super_users = array() ) {
+		protected function __construct( $super_users = array() ) {
 			$this->super_users = $super_users;
 
 			add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 0 );
 		}
 
 		/**
-		 * Sets the user.
+		 * Abstract function to implement.
 		 */
-		public function plugins_loaded() {
-			$this->user = $this->set_user();
-		}
-
-		/**
-		 * Exact copy of pluggable _wp_get_current_user();
-		 *
-		 * @return \WP_User
-		 */
-		private function set_user() {
-			global $current_user;
-
-			$user_id = apply_filters( 'determine_current_user', false );
-			remove_action( 'set_current_user', 'bbp_setup_current_user', 10 );
-
-			if ( ! $user_id ) {
-				wp_set_current_user( 0 );
-
-				return $current_user;
-			}
-
-			wp_set_current_user( $user_id );
-
-			if ( function_exists( 'bbp_setup_current_user' ) ) {
-				add_action( 'set_current_user', 'bbp_setup_current_user', 10 );
-			}
-
-			return $current_user;
-		}
+		abstract public function plugins_loaded();
 
 		/**
 		 * Determines whether the user is a super user.
 		 *
-		 * @param mixed $user User to be checked.
-		 *
-		 * @return bool Whether the user is a super user.
-		 */
-		public function is_current_super_user() {
-			$current_user = $this->get_current_user();
-
-			return $this->is_super_user( $current_user );
-		}
-
-		/**
-		 * Determines whether the user is a super user.
-		 *
-		 * @param mixed $user User to be checked.
+		 * @param string|int|\WP_User $user User to be checked.
 		 *
 		 * @return bool Whether the user is a super user.
 		 */
@@ -124,56 +83,13 @@ if ( ! class_exists( 'User' ) ) {
 		}
 
 		/**
-		 * Determines whether the user is a current user.
-		 *
-		 * @param mixed $user User to be checked.
-		 *
-		 * @return \WP_User Whether the user is the current user.
-		 */
-		public function get_current_user() {
-			if ( function_exists( 'wp_get_current_user' ) ) {
-				$current = wp_get_current_user();
-
-				if ( ! empty( $current ) ) {
-					return $current;
-				}
-			}
-
-			$this->set_user();
-			global $current_user;
-
-			return $current_user;
-		}
-
-		/**
-		 * Determines whether the user is a current user.
-		 *
-		 * @param mixed $user User to be checked.
-		 *
-		 * @return bool Whether the user is the current user.
-		 */
-		public function is_current_user( $user ) {
-			$user = $this->get_user( $user );
-			if ( function_exists( 'wp_get_current_user' ) ) {
-				$current = wp_get_current_user();
-
-				return ( $current->ID === $user->ID );
-			}
-
-			$this->set_user();
-			global $current_user;
-
-			return ( $current_user->ID === $user->ID );
-		}
-
-		/**
 		 * Gets the user by email, ID, or login.
 		 *
 		 * @param string|int|\WP_User $user User.
 		 *
 		 * @return false|\WP_User The WP_User object or false if User cannot be found.
 		 */
-		private function get_user( $user ) {
+		public function get_user( $user ) {
 			if ( is_numeric( $user ) ) {
 				$user = get_user_by( 'ID', $user );
 			} elseif ( is_string( $user ) ) {
