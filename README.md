@@ -2,7 +2,7 @@
 
 This package contains two classes:
 1. CurrentUser
-1. HideUser
+1. [HideUser](https://wpsmith.net/2019/hiding-an-user-in-the-wordpress-admin/)
 
 ## Set Current User
 
