@@ -24,7 +24,7 @@
   },
   "autoload": {
     "psr-4": {
-      "WPS\\Users\\": "src/"
+      "WPS\\WP\\Users\\": "src/"
     }
   }
 }
