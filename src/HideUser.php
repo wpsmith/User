@@ -36,7 +36,7 @@ if ( ! class_exists( __NAMESPACE__ . '\HideUser' ) ) {
 		 * Implements the hooks.
 		 */
 		public function plugins_loaded() {
-			add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
+			\add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
 		}
 
 		/**
@@ -52,7 +52,7 @@ if ( ! class_exists( __NAMESPACE__ . '\HideUser' ) ) {
 			/**
 			 * @var \WP_User $current_user \WP_User object for the current user.
 			 */
-			$current_user = wp_get_current_user();
+			$current_user = \wp_get_current_user();
 			if ( ! $current_user->exists() ) {
 				return;
 			}

@@ -45,73 +45,53 @@ if ( ! class_exists( __NAMESPACE__ . '\CurrentUser' ) ) {
 		 *
 		 * @return \WP_User
 		 */
-		public function set_user() {
+		public function set_user(): \WP_User {
 			global $current_user;
 
-			$user_id = apply_filters( 'determine_current_user', false );
-			remove_action( 'set_current_user', 'bbp_setup_current_user', 10 );
+			$user_id = \apply_filters( 'determine_current_user', false );
+			\remove_action( 'set_current_user', 'bbp_setup_current_user', 10 );
 
 			if ( ! $user_id ) {
-				wp_set_current_user( 0 );
+				\wp_set_current_user( 0 );
 
 				return $current_user;
 			}
 
-			wp_set_current_user( $user_id );
+			\wp_set_current_user( $user_id );
 
 			if ( function_exists( 'bbp_setup_current_user' ) ) {
-				add_action( 'set_current_user', 'bbp_setup_current_user', 10 );
+				\add_action( 'set_current_user', 'bbp_setup_current_user', 10 );
 			}
 
 			return $current_user;
 		}
 
 		/**
-		 * Determines whether the user is a super user.
+		 * Determines whether the current user is a super user.
 		 *
-		 * @param string|int|\WP_User $user User to be checked.
-		 *
-		 * @return bool Whether the user is a super user.
+		 * @return bool Whether the current user is a super user.
 		 */
-		public function is_current_super_user() {
+		public function is_current_super_user(): bool {
 			$current_user = $this->get_current_user();
 
 			return $this->is_super_user( $current_user );
 		}
 
 		/**
-		 * Determines whether the user is a super user.
-		 *
-		 * @alias is_current_super_user
-		 *
-		 * @param string|int|\WP_User $user User to be checked.
-		 *
-		 * @return bool Whether the user is a super user.
-		 */
-		public function is_current_user_a_super_user() {
-			return $this->is_current_super_user();
-		}
-
-		/**
 		 * Determines whether the user is a current user.
 		 *
-		 * @param string|int|\WP_User $user User to be checked.
-		 *
-		 * @return \WP_User Whether the user is the current user.
+		 * @return \WP_User The current user.
 		 */
-		public function get_current_user() {
+		public function get_current_user(): \WP_User {
 			if ( function_exists( 'wp_get_current_user' ) ) {
-				$current = wp_get_current_user();
+				$current = \wp_get_current_user();
 
 				if ( ! empty( $current ) ) {
 					return $current;
 				}
 			}
 
-			$this->set_user();
-			global $current_user;
-
-			return $current_user;
+			return $this->set_user();
 		}
 
 		/**
@@ -121,10 +101,10 @@ if ( ! class_exists( __NAMESPACE__ . '\CurrentUser' ) ) {
 		 *
 		 * @return bool Whether the user is the current user.
 		 */
-		public function is_current_user( $user ) {
+		public function is_current_user( \WP_User|int|string $user ): bool {
 			$user = $this->get_user( $user );
 			if ( function_exists( 'wp_get_current_user' ) ) {
-				$current = wp_get_current_user();
+				$current = \wp_get_current_user();
 
 				return ( $current->ID === $user->ID );
 			}

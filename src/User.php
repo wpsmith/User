@@ -40,24 +40,33 @@ if ( ! class_exists( __NAMESPACE__ . '\User' ) ) {
 		 *
 		 * @var \WP_User
 		 */
-		public $user;
+		public \WP_User $user;
 
 		/**
 		 * Super Users
 		 *
 		 * @var array Array of usernames.
 		 */
-		public $super_users;
+		public array $super_users;
 
 		/**
 		 * User constructor.
 		 *
-		 * @param array $super_users Array of super users.
+		 * @param array $args Array of super users.
 		 */
-		protected function __construct( $super_users = array() ) {
-			$this->super_users = $super_users;
+		protected function __construct( $args = array() ) {
+			parent::__construct( $args );
 
-			add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 0 );
+			\add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 0 );
+		}
+
+		/**
+		 * Sets the super users.
+		 *
+		 * @param array $super_users
+		 */
+		public function set_super_users( array $super_users ) {
+			$this->super_users = $super_users;
 		}
 
 		/**
@@ -72,7 +81,7 @@ if ( ! class_exists( __NAMESPACE__ . '\User' ) ) {
 		 *
 		 * @return bool Whether the user is a super user.
 		 */
-		public function is_super_user( $user ) {
+		public function is_super_user( \WP_User|int|string $user ): bool {
 			$user = $this->get_user( $user );
 
 			return (
@@ -87,9 +96,9 @@ if ( ! class_exists( __NAMESPACE__ . '\User' ) ) {
 		 *
 		 * @param string|int|\WP_User $user User.
 		 *
-		 * @return false|\WP_User The WP_User object or false if User cannot be found.
+		 * @return string|int|bool|\WP_User The WP_User object or false if User cannot be found.
 		 */
-		public function get_user( $user ) {
+		public function get_user( \WP_User|int|string $user ): \WP_User|bool|int|string {
 			if ( is_a( $user, 'WP_User' ) ) {
 				return $user;
 			} elseif ( is_numeric( $user ) ) {
