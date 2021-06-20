@@ -101,7 +101,7 @@ if ( ! class_exists( __NAMESPACE__ . '\CurrentUser' ) ) {
 		 *
 		 * @return bool Whether the user is the current user.
 		 */
-		public function is_current_user( \WP_User|int|string $user ): bool {
+		public function is_current_user( $user ): bool {
 			$user = $this->get_user( $user );
 			if ( function_exists( 'wp_get_current_user' ) ) {
 				$current = \wp_get_current_user();

@@ -81,7 +81,7 @@ if ( ! class_exists( __NAMESPACE__ . '\User' ) ) {
 		 *
 		 * @return bool Whether the user is a super user.
 		 */
-		public function is_super_user( \WP_User|int|string $user ): bool {
+		public function is_super_user( $user ): bool {
 			$user = $this->get_user( $user );
 
 			return (
@@ -98,7 +98,7 @@ if ( ! class_exists( __NAMESPACE__ . '\User' ) ) {
 		 *
 		 * @return string|int|bool|\WP_User The WP_User object or false if User cannot be found.
 		 */
-		public function get_user( \WP_User|int|string $user ): \WP_User|bool|int|string {
+		public function get_user( $user ) {
 			if ( is_a( $user, 'WP_User' ) ) {
 				return $user;
 			} elseif ( is_numeric( $user ) ) {
